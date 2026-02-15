@@ -109,17 +109,29 @@
 
 .alert-body {
   flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
 }
 
 .alert-title {
   display: block;
   font-weight: 600;
+  margin: 0;
   margin-bottom: 2px;
+  overflow: visible;
+  text-overflow: clip;
+  white-space: normal;
 }
 
 .alert-message {
   font-size: 14px;
   line-height: 1.4;
+  margin: 0;
+  display: block;
+  overflow: visible;
+  text-overflow: clip;
+  white-space: normal;
 }
 
 .alert-close {
@@ -135,6 +147,30 @@
 
 .alert-close:hover {
   opacity: 1;
+}
+
+.alert-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.alert-action-btn {
+  border: 1px solid rgba(0, 0, 0, 0.25);
+  background: transparent;
+  color: inherit;
+  border-radius: 6px;
+  padding: 6px 10px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.alert-action-btn.primary {
+  background: #1f2937;
+  border-color: #1f2937;
+  color: #fff;
 }
 
 @keyframes slideInRight {

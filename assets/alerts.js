@@ -15,9 +15,29 @@
       });
     }
 
-    show(alertData) {
+    show(alertData, typeOverride, titleOverride, durationOverride) {
       if (!this.initialized) {
-        return;
+        return null;
+      }
+
+      if (typeof alertData === 'string') {
+        let durationValue = durationOverride;
+        let titleValue = titleOverride;
+
+        if (typeof titleOverride === 'number' && durationOverride === undefined) {
+          durationValue = titleOverride;
+          titleValue = '';
+        }
+
+        alertData = {
+          type: typeOverride || 'info',
+          title: titleValue || '',
+          message: alertData,
+        };
+
+        if (typeof durationValue === 'number') {
+          alertData.duration = durationValue;
+        }
       }
 
       const {
@@ -58,6 +78,8 @@
       if (duration > 0) {
         setTimeout(() => this.dismiss(alertId), duration);
       }
+
+      return alertElement;
     }
 
     dismiss(alertId) {

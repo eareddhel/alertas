@@ -4,6 +4,33 @@ Recurso reutilizable de alertas para proyectos PHP con frontend Bootstrap.
 
 Objetivo: copiar la carpeta `alertas` a cualquier proyecto y tener alertas funcionando sin reconstruir el sistema.
 
+## Panel de Configuración 🎨
+
+**Nuevo**: ahora incluye un **panel de configuración profesional** (`config-panel.php`) donde puedes personalizar:
+
+- **Posición**: 9 opciones (arriba-izq, arriba-centro, arriba-der, centro-izq, centro, centro-der, abajo-izq, abajo-centro, abajo-der)
+- **Tamaños**: ancho máximo, padding, tamaño de fuente, redondeado
+- **Colores**: colores de fondo, borde, texto e icono para cada tipo (éxito, error, aviso, info)
+- **Duración**: tiempo de cierre automático por tipo de alerta
+- **Previsualización en tiempo real** de los cambios
+- **Descarga de configuración** como JSON
+
+### Acceso al panel
+
+Desde el archivo `index.php`, verás un botón destacado **"Panel de configuración"** o accede directamente a:
+
+```
+http://localhost/alertas/config-panel.php
+```
+
+### Guardar configuración
+
+La configuración se guarda en la sesión PHP y persiste durante tu sesión de desarrollo. Puedes:
+
+1. Usar el botón **"Guardar configuración"** para persistir los cambios
+2. Hacer clic en **"Descargar configuración"** para obtener un archivo JSON
+3. O simplemente **restaurar valores por defecto** si lo deseas
+
 ## Estructura
 
 - `php/AlertRepository.php`: recolecta alertas desde query string y sesión.
@@ -11,6 +38,8 @@ Objetivo: copiar la carpeta `alertas` a cualquier proyecto y tener alertas funci
 - `assets/alerts.js`: motor de toasts y API global `AlertSystem`.
 - `assets/alerts.css`: estilos de alertas.
 - `examples/layout_footer_example.php`: integración mínima.
+- `config-panel.php`: **NUEVO** - Panel profesional de configuración de alertas.
+- `index.php`: página de ejemplos con acceso directo al panel.
 
 ## Integración rápida
 
