@@ -1,0 +1,150 @@
+.alerts-container {
+  position: fixed;
+  top: 70px;
+  right: 20px;
+  left: auto;
+  max-width: 500px;
+  margin: 0 auto;
+  z-index: 9999;
+  pointer-events: none;
+}
+
+@media (max-width: 768px) {
+  .alerts-container {
+    top: 60px;
+    left: 10px;
+    right: 10px;
+    max-width: 100%;
+  }
+}
+
+.alert-toast {
+  display: flex;
+  align-items: center;
+  padding: 16px;
+  margin-bottom: 12px;
+  border-radius: 8px;
+  border: 1px solid;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  animation: slideInRight 0.3s ease-out;
+  opacity: 0;
+  transition: opacity 0.3s ease, transform 0.3s ease;
+  pointer-events: auto;
+  background-color: #fff;
+}
+
+.alert-toast.show {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.alert-toast.alert-success {
+  background-color: #d1e7dd;
+  border-color: #badbcc;
+  color: #0f5132;
+}
+
+.alert-toast.alert-success .alert-icon {
+  color: #198754;
+}
+
+.alert-toast.alert-success .alert-close {
+  color: #0f5132;
+}
+
+.alert-toast.alert-danger {
+  background-color: #f8d7da;
+  border-color: #f5c2c7;
+  color: #842029;
+}
+
+.alert-toast.alert-danger .alert-icon {
+  color: #dc3545;
+}
+
+.alert-toast.alert-danger .alert-close {
+  color: #842029;
+}
+
+.alert-toast.alert-warning {
+  background-color: #fff3cd;
+  border-color: #ffecb5;
+  color: #664d03;
+}
+
+.alert-toast.alert-warning .alert-icon {
+  color: #ffc107;
+}
+
+.alert-toast.alert-warning .alert-close {
+  color: #664d03;
+}
+
+.alert-toast.alert-info {
+  background-color: #cff4fc;
+  border-color: #b6effb;
+  color: #055160;
+}
+
+.alert-toast.alert-info .alert-icon {
+  color: #0dcaf0;
+}
+
+.alert-toast.alert-info .alert-close {
+  color: #055160;
+}
+
+.alert-content {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  flex: 1;
+}
+
+.alert-icon {
+  font-size: 20px;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.alert-body {
+  flex: 1;
+}
+
+.alert-title {
+  display: block;
+  font-weight: 600;
+  margin-bottom: 2px;
+}
+
+.alert-message {
+  font-size: 14px;
+  line-height: 1.4;
+}
+
+.alert-close {
+  background: none;
+  border: none;
+  padding: 0;
+  margin-left: 12px;
+  cursor: pointer;
+  font-size: 18px;
+  opacity: 0.7;
+  transition: opacity 0.2s;
+}
+
+.alert-close:hover {
+  opacity: 1;
+}
+
+@keyframes slideInRight {
+  from {
+    opacity: 0;
+    transform: translateX(100px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
