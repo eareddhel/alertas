@@ -1,0 +1,28 @@
+# OS / Editor
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# Logs
+*.log
+
+# Environment / local overrides
+.env
+.env.*
+!.env.example
+
+# Dependencies / build artifacts
+node_modules/
+dist/
+build/
+coverage/
+
+# PHP caches / reports
+.phpunit.result.cache
+.php-cs-fixer.cache
+
+# Archives
+*.zip
+*.tar
+*.gz

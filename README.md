@@ -238,6 +238,18 @@ exit;
 - Usa `push()` para eventos de backend (guardar, eliminar, autenticar).
 - Usa `AlertSystem.notify()` para eventos puramente frontend.
 
+## Versionado y releases
+
+- Este repositorio usa versionado semántico: `MAJOR.MINOR.PATCH`.
+- Historial de cambios: ver `CHANGELOG.md`.
+- Versión estable inicial recomendada: `v1.0.0`.
+
+Regla práctica:
+
+- `PATCH`: correcciones internas sin romper integración.
+- `MINOR`: mejoras compatibles (nuevas opciones o utilidades).
+- `MAJOR`: cambios que requieren ajustar integración existente.
+
 ## Integración en proyectos sin Bootstrap
 
 Sí es posible usar este sistema sin Bootstrap, con una salvedad importante:
@@ -301,3 +313,9 @@ $alertsJsPath = ($basePath !== '' ? $basePath : '') . '/assets/alerts.js';
 </body>
 </html>
 ```
+
+## Estado actual
+
+- Portable: sí (copiar carpeta + incluir plantilla).
+- Dependencia frontend opcional: Bootstrap Icons (solo para iconos).
+- Fallback de assets: activo (ruta por URL + error de carga del script).
