@@ -319,3 +319,36 @@ $alertsJsPath = ($basePath !== '' ? $basePath : '') . '/assets/alerts.js';
 - Portable: sí (copiar carpeta + incluir plantilla).
 - Dependencia frontend opcional: Bootstrap Icons (solo para iconos).
 - Fallback de assets: activo (ruta por URL + error de carga del script).
+
+## Despliegue automático (GitHub -> FTP)
+
+Este repositorio incluye el workflow `/.github/workflows/deploy-ftp.yml` para desplegar automáticamente por FTP cuando haces push a `main` o `master`.
+
+### 1) Crear secretos en GitHub
+
+En tu repositorio de GitHub, ve a:
+
+- `Settings` -> `Secrets and variables` -> `Actions` -> `New repository secret`
+
+Crea estos secretos:
+
+- `FTP_SERVER`: host FTP (ejemplo: `ftp.tudominio.cl` o IP del servidor).
+- `FTP_USERNAME`: usuario FTP.
+- `FTP_PASSWORD`: contraseña FTP.
+- `FTP_SERVER_DIR`: carpeta remota de despliegue (ejemplo: `/public_html/` o `/public_html/alertas/`).
+
+Opcionales:
+
+- `FTP_PROTOCOL`: `ftp` o `ftps` (si no existe, usa `ftp`).
+- `FTP_PORT`: puerto FTP (si no existe, usa `21`).
+
+### 2) Ejecutar despliegue
+
+- Automático: cada `push` a `main` o `master`.
+- Manual: pestaña `Actions` -> workflow `Deploy FTP` -> `Run workflow`.
+
+### 3) Recomendaciones
+
+- No guardes credenciales FTP en archivos del proyecto.
+- Si expones una contraseña por error, cámbiala inmediatamente en tu hosting y actualiza el secreto en GitHub.
+- Ajusta `FTP_SERVER_DIR` hasta que `https://tu-dominio/` cargue los archivos correctos.
