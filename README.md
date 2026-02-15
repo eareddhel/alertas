@@ -6,14 +6,17 @@ Objetivo: copiar la carpeta `alertas` a cualquier proyecto y tener alertas funci
 
 ## Panel de Configuración 🎨
 
-**Nuevo**: ahora incluye un **panel de configuración profesional** (`config-panel.php`) donde puedes personalizar:
+**Nuevo**: ahora incluye un **panel profesional con 7 pestañas** (`config-panel.php`) para personalizar:
 
-- **Posición**: 9 opciones (arriba-izq, arriba-centro, arriba-der, centro-izq, centro, centro-der, abajo-izq, abajo-centro, abajo-der)
-- **Tamaños**: ancho máximo, padding, tamaño de fuente, redondeado
-- **Colores**: colores de fondo, borde, texto e icono para cada tipo (éxito, error, aviso, info)
-- **Duración**: tiempo de cierre automático por tipo de alerta
-- **Previsualización en tiempo real** de los cambios
-- **Descarga de configuración** como JSON
+### Pestañas disponibles
+
+1. **Posición** (9 opciones)
+2. **Tamaños** (ancho, padding, fuente, redondeado)
+3. **Colores** (fondo, borde, texto, icono por tipo)
+4. **Duración** (cierre automático por tipo)
+5. **Entrada** - Dirección y velocidad de animación (NUEVO)
+6. **Acciones** (guardar, restaurar, descargar)
+7. **Previsualización** (demo en vivo)
 
 ### Acceso al panel
 
@@ -23,13 +26,15 @@ Desde el archivo `index.php`, verás un botón destacado **"Panel de configuraci
 http://localhost/alertas/config-panel.php
 ```
 
-### Guardar configuración
+### Persistencia de Configuración
 
-La configuración se guarda en la sesión PHP y persiste durante tu sesión de desarrollo. Puedes:
+La configuración se guarda en el archivo auto-generado `alertas-config.php` y persiste entre sesiones. Puedes:
 
-1. Usar el botón **"Guardar configuración"** para persistir los cambios
-2. Hacer clic en **"Descargar configuración"** para obtener un archivo JSON
-3. O simplemente **restaurar valores por defecto** si lo deseas
+1. Usar **"Guardar configuración"** para aplicar cambios inmediatamente
+2. Usar **"Descargar configuración"** para obtener `alertas-config.php` editable
+3. Usar **"Restaurar valores por defecto"** desde alerta de confirmación
+
+El archivo es un retorno PHP puro, completamente editable.
 
 ## Estructura
 
@@ -38,8 +43,10 @@ La configuración se guarda en la sesión PHP y persiste durante tu sesión de d
 - `assets/alerts.js`: motor de toasts y API global `AlertSystem`.
 - `assets/alerts.css`: estilos de alertas.
 - `examples/layout_footer_example.php`: integración mínima.
-- `config-panel.php`: **NUEVO** - Panel profesional de configuración de alertas.
-- `index.php`: página de ejemplos con acceso directo al panel.
+- `alertas-config.php`: archivo auto-generado con configuración persistente (editable).
+- `config-panel.php`: panel profesional con 7 pestañas.
+- `assets/js/config-panel.js`: lógica del panel (estilos dinámicos, tab switching).
+- `index.php`: página de ejemplos con acceso al panel.
 
 ## Integración rápida
 
@@ -131,12 +138,24 @@ Nota: si esas rutas no coinciden con tu estructura final, la plantilla tiene fal
 
 ### 4) Lanzar alertas manuales desde JavaScript
 
+Formato simple (mensaje, tipo, titulo):
 ```javascript
-AlertSystem.notify('Perfil actualizado', 'success', 'Correcto');
-AlertSystem.notify('No se pudo procesar la solicitud', 'danger', 'Error');
-AlertSystem.notify('Revisa los campos obligatorios', 'warning', 'Atención');
-AlertSystem.notify('Tienes cambios pendientes', 'info', 'Información');
+AlertSystem.notify('Cambios guardados', 'success', 'Listo');
+AlertSystem.notify('Error en la solicitud', 'danger', 'Oops');
 ```
+
+Formato objeto (mas opciones):
+```javascript
+AlertSystem.show({
+    type: 'success',
+    title: 'Actualizado',
+    message: 'Perfil actualizado correctamente',
+    duration: 3000,
+    dismissible: true
+});
+```
+
+Las animaciones configuradas se aplican automáticamente.
 
 ### 5) Alertas flash (backend -> redirect -> frontend)
 
@@ -151,6 +170,39 @@ $alertRepository->push($_SESSION, [
 
 header('Location: /perfil');
 exit;
+```
+
+## Animaciones de entrada (NUEVO) ⭐
+
+### Direcciones disponibles
+
+- **Automático**: ajusta según posición (recomendado)
+- **Desde arriba**: para arrays en top
+- **Desde abajo**: para arrays en bottom
+- **Desde izquierda**: para arrays a la izq
+- **Desde derecha**: para arrays a la der
+- **Desde el centro**: efecto pop-in con rebote sutil
+
+### Velocidades
+
+- **Lento**: 450ms (premium feel)
+- **Normal**: 300ms (recomendado)
+- **Rápido**: 200ms (discreto)
+
+### Ejemplos rápidos
+
+Alertas discretas (abajo-derecha, desde abajo, rápido):
+```
+Posición: Abajo-derecha
+Entrada: Desde abajo
+Velocidad: Rápido
+```
+
+Alertas con rebote (centro, desde centro):
+```
+Posición: Centro
+Entrada: Desde el centro
+Velocidad: Normal
 ```
 
 ## Patrón recomendado (controller + layout)
@@ -214,12 +266,13 @@ include __DIR__ . '/../alertas/templates/alerts.php';
 ## Checklist (2 minutos)
 
 1. Copia la carpeta `alertas` completa dentro de tu proyecto.
-2. Inicia sesión con `session_start();` en el entrypoint o layout principal.
-3. Carga `AlertRepository.php`, recolecta alertas con `collect($_GET, $_SESSION)` y pásalas a la plantilla.
+2. Inicia sesión con `session_start();` en el entrypoint.
+3. Carga `AlertRepository.php`, recolecta alertas y pásalas a la plantilla.
 4. Incluye `templates/alerts.php` al final del layout (antes de `</body>`).
-5. Para disparar alertas manuales, usa `AlertSystem.notify('Mensaje', 'success', 'Título')`.
+5. Dispara alertas con `AlertSystem.notify()` o `AlertSystem.show()`.
+6. (Opcional) Personaliza en `config-panel.php` o edita `alertas-config.php`.
 
-Si defines rutas manuales de assets y fallan, la plantilla intenta resolver fallback automáticamente desde la URL actual.
+Si las rutas de assets fallan, la plantilla intenta resolver fallback automáticamente.
 
 ## Troubleshooting
 
@@ -265,7 +318,9 @@ exit;
 - Conserva la carpeta `alertas` sin cambios para facilitar upgrades.
 - Centraliza la inclusión de `templates/alerts.php` en un único layout.
 - Usa `push()` para eventos de backend (guardar, eliminar, autenticar).
-- Usa `AlertSystem.notify()` para eventos puramente frontend.
+- Usa `AlertSystem.notify()` o `AlertSystem.show()` para eventos frontend.
+- Personaliza animaciones en `config-panel.php` según UX deseado.
+- Edita `alertas-config.php` directamente si necesitas programación avanzada.
 
 ## Versionado y releases
 
@@ -346,8 +401,11 @@ $alertsJsPath = ($basePath !== '' ? $basePath : '') . '/assets/alerts.js';
 ## Estado actual
 
 - Portable: sí (copiar carpeta + incluir plantilla).
-- Dependencia frontend opcional: Bootstrap Icons (solo para iconos).
-- Fallback de assets: activo (ruta por URL + error de carga del script).
+- Persistencia: archivo `alertas-config.php` auto-generado y editable.
+- Configuracion: panel profesional con 7 pestañas + edición en archivo.
+- Animaciones: 5 direcciones + 3 velocidades + automático.
+- Dependencia frontend opcional: Bootstrap Icons.
+- Fallback: activo (ruta URL + error de carga del script).
 
 ## Despliegue automático (GitHub -> FTP)
 
